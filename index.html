@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0f1419 100%);
+            color: #e0e6ed;
+            overflow-x: hidden;
+        }
+
+        /* Animated background particles */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(59, 130, 246, 0.5);
+            border-radius: 50%;
+            animation: float 15s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) translateX(50px); opacity: 0; }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 14, 39, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 5%;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+        }
+
+        nav a {
+            color: #e0e6ed;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #3b82f6;
+            transition: width 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        nav a:hover {
+            color: #3b82f6;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            z-index: 1;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .profile-photo {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            margin: 0 auto 2rem;
+            border: 5px solid #3b82f6;
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
+            object-fit: cover;
+            animation: photoFloat 3s ease-in-out infinite;
+            background: linear-gradient(135deg, #1e293b, #334155);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            overflow: hidden;
+        }
+
+        @keyframes photoFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .profile-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #3b82f6, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero .subtitle {
+            font-size: 1.5rem;
+            color: #94a3b8;
+            margin-bottom: 2rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(59, 130, 246, 0.6);
+        }
+
+        /* Section Styling */
+        section {
+            position: relative;
+            padding: 6rem 5%;
+            z-index: 1;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #3b82f6;
+        }
+
+        /* About Section */
+        .about-content {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(26, 31, 58, 0.5);
+            padding: 3rem;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            line-height: 1.8;
+        }
+
+        /* Skills Section */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .skill-card {
+            background: rgba(26, 31, 58, 0.5);
+            padding: 2rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            transition: all 0.3s;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-10px);
+            border-color: #3b82f6;
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+        }
+
+        .skill-card h3 {
+            color: #3b82f6;
+            margin-bottom: 1rem;
+        }
+
+        /* Projects Section */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .project-card {
+            background: rgba(26, 31, 58, 0.5);
+            border-radius: 15px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            transition: all 0.3s;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(59, 130, 246, 0.4);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #1e293b, #334155);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+        .project-content {
+            padding: 1.5rem;
+        }
+
+        .project-content h3 {
+            color: #3b82f6;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Contact Section */
+        .contact-content {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .contact-link {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+            text-decoration: none;
+            border-radius: 10px;
+            border: 2px solid #3b82f6;
+            transition: all 0.3s;
+        }
+
+        .contact-link:hover {
+            background: #3b82f6;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        /* Footer */
+        footer {
+            position: relative;
+            text-align: center;
+            padding: 2rem;
+            background: rgba(10, 14, 39, 0.8);
+            color: #94a3b8;
+            z-index: 1;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            nav ul {
+                gap: 1.5rem;
+            }
+
+            .skills-grid, .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation" id="bgAnimation"></div>
+
+    <nav>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <div class="profile-photo">
+                <img src="C:\Users\GARGI\OneDrive\Pictures\ImpPhotos\MyPhoto.jpg" alt="Your Name" id="profileImg">
+            </div>
+            <h1>GARGI CHETAN PATIL</h1>
+            <p class="subtitle">Full Stack | Software Developer | AI&ML</p>
+            <a href="#contact" class="cta-button">Get In Touch</a>
+        </div>
+    </section>
+
+    <section id="about">
+        <h2 class="section-title">About Me</h2>
+        <div class="about-content">
+            <p>Hello! I’m a dedicated and curious developer with a strong passion for building impactful digital experiences. I enjoy transforming ideas into scalable, user-friendly solutions through clean code, modern architectures, and intuitive design.</p>
+            <p style="margin-top: 1rem;">With a growing expertise in Web Development, AI/ML, and backend engineering, I love exploring emerging technologies and applying them to real-world problems. Whether it’s crafting seamless interfaces, developing intelligent systems, or optimizing backend workflows, I strive to bring both creativity and precision to everything I build.</p>
+            <p style="margin-top: 1rem;">I believe in continuous improvement, every project is an opportunity to learn, innovate, and grow. When I'm not coding, you’ll find me experimenting with new tools, contributing to personal projects, or diving deeper into the world of tech and innovation.</p>
+        </div>
+    </section>
+
+    <section id="skills">
+    <h2 class="section-title">Skills & Expertise</h2>
+    <div class="skills-grid">
+
+            <div class="skill-card">
+                <h3>Frontend Development</h3>
+                <p>HTML, CSS, JavaScript, React.js, Tailwind CSS, responsive UI design, and component-based architecture.</p>
+            </div>
+
+            <div class="skill-card">
+                <h3>Backend Development</h3>
+                <p>Python (Flask), RESTful APIs, authentication systems, MongoDB integration, server-side logic, and secure backend architecture.</p>
+            </div>
+
+            <div class="skill-card">
+                <h3>AI & Machine Learning</h3>
+                <p>Machine Learning models, Deep Learning basics, TF-IDF chatbot development, Random Forest, k-Means clustering, model training & evaluation, and real-time AI integrations.</p>
+            </div>
+
+            <div class="skill-card">
+                <h3>Data Science & Analytics</h3>
+                <p>Data preprocessing, exploratory analysis, visualization, handling medical datasets, and applying ML algorithms to real-world problems.</p>
+            </div>
+
+
+
+        </div>
+    </section>
+
+
+    <section id="projects">
+    <h2 class="section-title">Featured Projects</h2>
+    <div class="projects-grid">
+
+        <!-- DocNearYou -->
+        <div class="project-card" onclick="window.open('https://github.com/GarggiiPatil/DocNearYou', '_blank')">
+            <div class="project-image">🏥</div>
+            <div class="project-content">
+                <h3>DocNearYou – AI Healthcare Assistant</h3>
+                <p>
+                    A full-stack AI-powered healthcare platform with disease prediction models, 
+                    TF-IDF chatbot, appointment system, and secure backend using Flask + MongoDB.
+                </p>
+                <p class="project-link">🔗 GitHub: https://github.com/GarggiiPatil/DocNearYou</p>
+            </div>
+        </div>
+
+        <!-- ASL Sign Language Translator -->
+        <div class="project-card" onclick="window.open('https://github.com/GarggiiPatil/ASL-Sign-Language-Translator', '_blank')">
+            <div class="project-image">🤟</div>
+            <div class="project-content">
+                <h3>ASL Sign Language Translator</h3>
+                <p>
+                    A real-time webcam-based ASL recognition system using computer vision and ML, 
+                    capable of identifying hand gestures and enhancing accessibility.
+                </p>
+                <p class="project-link">🔗 GitHub: https://github.com/GarggiiPatil/ASL-Sign-Language-Translator</p>
+            </div>
+        </div>
+
+        <!-- Student Performance Dashboard -->
+        <div class="project-card" onclick="window.open('https://github.com/GarggiiPatil/Student-Dashboard-using-POWER-BI', '_blank')">
+            <div class="project-image">📊</div>
+            <div class="project-content">
+                <h3>Student Performance Dashboard (Power BI)</h3>
+                <p>
+                    An analytical dashboard visualizing student scores, attendance, 
+                    trends, and insights using Power BI for data-driven decision-making.
+                </p>
+                <p class="project-link">🔗 GitHub: https://github.com/GarggiiPatil/Student-Dashboard-using-POWER-BI</p>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+    <section id="contact">
+        <h2 class="section-title">Let's Connect</h2>
+        <div class="contact-content">
+            <p>I'm always interested in hearing about new projects and opportunities. Feel free to reach out!</p>
+            <div class="contact-links">
+                <a href="mailto:patilgargi209@gmail.com" class="contact-link">Email</a>
+                <a href="https://www.linkedin.com/in/garggii-patil" target="_blank" class="contact-link">LinkedIn</a>
+                <a href="https://github.com/GarggiiPatil" target="_blank" class="contact-link">GitHub</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Gargi Patil. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Handle profile image - show placeholder if image fails to load
+        const profileImg = document.getElementById('profileImg');
+        profileImg.onerror = function() {
+            this.style.display = 'none';
+            this.parentElement.innerHTML = '👤';
+        };
+
+        // Create animated particles
+        const bgAnimation = document.getElementById('bgAnimation');
+        for (let i = 0; i < 50; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.width = Math.random() * 5 + 2 + 'px';
+            particle.style.height = particle.style.width;
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 15 + 's';
+            particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            bgAnimation.appendChild(particle);
+        }
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
